@@ -1,1 +1,1 @@
-export { default as GCPLogger } from "./GCPLogger.js";
+export { default as GCPUserInfo } from "./GCPUserInfo.js";

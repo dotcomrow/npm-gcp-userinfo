@@ -1,26 +1,11 @@
-import GCloudLogger from '../src/GCPLogger.js';
+import GCPUserInfo from '../src/GCPUserInfo.js';
 import { GCPAccessToken } from 'npm-gcp-token';
 import * as fs from 'fs';
 
-const projectId = 'gcploggingproject-427121'; // replace with your GCP project ID    
-const keyFilePath = '/Users/admin/Downloads/logging-test-key.json'; // replace with the path to your service account key file
+const keyFilePath = '/Users/admin/secrets/google.key'; // replace with the path to your service account key file
 const keyFileContent = fs.readFileSync(keyFilePath, 'utf8');
 
-const logName = 'my-log';
-const severity = 'INFO';
-const message = 'This is a log message test log17.';
-
 var accessToken = new GCPAccessToken(keyFileContent);
-var token = await accessToken.getAccessToken('https://www.googleapis.com/auth/logging.write');
+var token = await accessToken.getAccessToken('openid profile email https://www.googleapis.com/auth/admin.directory.group.readonly');
 
-GCloudLogger.logEntry(projectId, token.access_token, logName, 
-    [
-        {
-          severity: severity,
-          // textPayload: message,
-          jsonPayload: {
-            message: message
-          }
-        },
-      ],
-);
+console.log(await GCPUserInfo.getUserInfo(token.access_token, "113903586019246158170", "suncoast.systems"))
